@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="google-site-verification" content="inlJ--pbzqRzZ8_su-R0xruBWgBLyYECq1P7BdRg_Fg" />
+   <meta name="google-site-verification" content="inlJ--pbzqRzZ8_su-R0xruBWgBLyYECq1P7BdRg_Fg" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Aman Virurkar — Portfolio</title>
@@ -39,38 +39,28 @@
     .hero-content{z-index:1;max-width:600px;text-align:left;}
     .hero-content h1{font-size:50px;line-height:1.2;margin-bottom:16px;}
     .hero-content p{font-size:18px;line-height:1.6;}
+
+    /* ==== HERO PHOTO EFFECT ==== */
     .hero img {
-  width: 280px;
-  height: 280px;
-  object-fit: cover;
-  border-radius: 50%;
-  box-shadow: 0 8px 24px rgba(0,0,0,.2);
-  z-index: 1;
-  transition: transform 0.5s ease, box-shadow 0.5s ease;
-  animation: float 6s ease-in-out infinite;
-}
-
-/* Hover zoom & glow */
-.hero img:hover {
-  transform: scale(1.08) rotate(2deg);
-  box-shadow: 0 12px 30px rgba(0,119,255,.4), 0 0 15px rgba(0,255,128,.3);
-}
-
-/* Floating animation */
-@keyframes float {
-  0% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-10px) rotate(1deg); }
-  100% { transform: translateY(0px) rotate(0deg); }
-}
-
-/* Responsive adjustments */
-@media(max-width:900px){
-  .hero img{width:180px;height:180px;}
-}
-@media(max-width:600px){
-  .hero img{width:150px;height:150px;}
-}
-
+      width:280px;
+      height:280px;
+      object-fit:cover;
+      border-radius:50%;
+      box-shadow:0 8px 24px rgba(0,0,0,.2);
+      z-index:1;
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+      animation: float 6s ease-in-out infinite;
+      margin-top:20px;
+    }
+    .hero img:hover {
+      transform: scale(1.08) rotate(2deg);
+      box-shadow: 0 12px 30px rgba(0,119,255,.4), 0 0 15px rgba(0,255,128,.3);
+    }
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(1deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
 
     /* ==== NAME EFFECT ==== */
     .name-effect {
@@ -106,7 +96,7 @@
       background:#0077ff;border-radius:2px;
     }
 
-    /* ==== GRID ==== */
+    /* ==== GRID + CARDS ==== */
     .grid{
       display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
       gap:20px;
@@ -114,11 +104,21 @@
     .card{
       background:white;padding:20px;border-radius:16px;
       box-shadow:0 6px 14px rgba(0,0,0,.08);font-weight:600;
-      transition:.3s;cursor:pointer;display:flex;
-      flex-direction:column;align-items:center;justify-content:center;gap:12px;
+      display:flex;flex-direction:column;align-items:center;
+      justify-content:center;gap:12px;cursor:pointer;
+      opacity:0; transform:translateY(20px);
+      transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out, opacity 0.6s ease-in-out;
     }
     .card img{
       width:60px;height:60px;object-fit:contain;
+    }
+    .card:hover{
+      transform: translateY(-6px) scale(1.05);
+      box-shadow:0 12px 30px rgba(0,0,0,.15);
+    }
+    .card.animate{
+      opacity:1;
+      transform: translateY(0);
     }
 
     /* ==== CONTACT ==== */
@@ -147,7 +147,7 @@
     @media(max-width:900px){
       .hero{flex-direction:column;justify-content:center;text-align:center;padding:40px 5%;}
       .hero-content{text-align:center;}
-      .hero img{margin-top:20px;width:180px;height:180px;}
+      .hero img{width:180px;height:180px;}
     }
     @media(max-width:600px){
       nav ul{padding:16px 20px;gap:16px;justify-content:center;}
@@ -269,14 +269,28 @@
       let current = "";
       sections.forEach(sec => {
         const top = sec.offsetTop - 80;
-        if (scrollY >= top) current = sec.getAttribute("id");
+        if(scrollY >= top) current = sec.getAttribute("id");
       });
       navLinks.forEach(a => {
         a.classList.remove("active");
         if(a.getAttribute("href") === "#" + current) a.classList.add("active");
       });
     });
+
+    // Animate cards on scroll
+    const cards = document.querySelectorAll('.card');
+    function animateCards() {
+      const triggerBottom = window.innerHeight * 0.85;
+      cards.forEach(card => {
+        const cardTop = card.getBoundingClientRect().top;
+        if(cardTop < triggerBottom){
+          card.classList.add('animate');
+        }
+      });
+    }
+    window.addEventListener('scroll', animateCards);
+    window.addEventListener('load', animateCards);
   </script>
+
 </body>
 </html>
-
